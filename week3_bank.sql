@@ -81,4 +81,63 @@ GROUP BY branch_name;
 
 select * from BranchloanSums;
 
+SELECT d.customer_name
+FROM depositer d
+JOIN BankAccount ba ON d.acc_no = ba.acc_no
+JOIN branch b ON ba.branch_name = b.branch_name
+WHERE b.branch_city = 'Delhi'
+GROUP BY d.customer_name
+HAVING COUNT(DISTINCT b.branch_name) = (
+    SELECT COUNT(*)
+    FROM branch
+    WHERE branch_city = 'Delhi'
+);
 
+
+select customer_name, city 
+from BankCustomer 
+where city='Bangalore';
+
+select acc_no, balance from BankAccount where balance>100000;
+
+
+select branch_city, SUM(assets) from Branch group by branch_city;
+
+select B.branch_name, SUM(A.balance) "Sum of Balances" from Branch B, BankAccount A 
+group by B.branch_name;
+
+select customer_name from Depositer    
+group by customer_name 
+having count(*)>1;
+
+SELECT d.customer_name, bacc.acc_no, bc.city
+FROM depositer d
+JOIN BankAccount bacc ON d.acc_no = bacc.acc_no
+JOIN BankCustomer bc ON d.customer_name = bc.customer_name;
+
+
+
+select distinct customer_name 
+FROM BankCustomer where customer_name NOT IN (
+SELECT customer_name from depositer);
+
+select distinct d.customer_Name from depositer d JOIN BankAccount ba ON d.acc_No = ba.acc_no
+WHERE ba.branch_name IN (
+SELECT branch_name from loan where branch_name IN(select branch_name FROM branch 
+where branch_city ='Bangalore')
+);
+
+Select branch_name from branch where assets>ALL(select assets from branch where branch_city='Bangalore');
+
+
+delete from BankAccount Where branch_name IN (select branch_name FROM branch
+where branch_city='Bombay');
+
+select * from BankAccount;
+
+UPDATE BankAccount
+SET balance = balance * 1.05;
+
+
+
+select * from BankAccount;
